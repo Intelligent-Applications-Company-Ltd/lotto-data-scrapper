@@ -1,0 +1,19 @@
+{
+  "name": "lotto",
+  "version": "1.0.0",
+  "description": "pull lotto numbers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "lotto"
+  ],
+  "author": "mitra kalloo",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "*",
+    "fs": "*",
+    "request": "*"
+  }
+}
