@@ -3,44 +3,14 @@ let cheerio = require('cheerio'),
     fs = require('fs');
 
 
-let DATA;
-
-
 // Wednesdays
-getNumbers(new Date("01/03/2001"), "wednesdays2002.csv");
+getNumbers(new Date("01/03/2001"), "wednesdays2002.csv", []);
 
 //Saturday
-//getNumbers(new Date("01/06/2001"), "saturdays2002.csv");
+getNumbers(new Date("01/06/2001"), "saturdays2002.csv", []);
 
 
-function getMth(i) {
-    let month = [];
-    month[0] = "Jan";
-    month[1] = "Feb";
-    month[2] = "Mar";
-    month[3] = "Apr";
-    month[4] = "May";
-    month[5] = "Jun";
-    month[6] = "Jul";
-    month[7] = "Aug";
-    month[8] = "Sep";
-    month[9] = "Oct";
-    month[10] = "Nov";
-    month[11] = "Dec";
-    return month[i];
-}
-
-function shortYear(fullYear) {
-    fullYear = fullYear.toString();
-    return fullYear.slice(-2, -1) + fullYear.slice(-1)
-}
-
-function padNumber(number) {
-    return (number < 10 ? '0' : '') + number
-}
-
-
-function getNumbers(init, fileName) {
+function getNumbers(init, fileName, DATA) {
     if (init.getTime() < new Date().getTime()) {
         let strDate = padNumber(init.getDate()) + "-" + getMth(init.getMonth()) + "-" + shortYear(init.getFullYear());
         getLottoOnDay("http://www.nlcbplaywhelotto.com/nlcb-lotto-plus-results/?date=", strDate, function (data) {
@@ -52,13 +22,13 @@ function getNumbers(init, fileName) {
                 for (let i = 0; i < data.power.length; i++) {
                     str += "," + data.power[i] + "\n";
                 }
-                console.log(str);
+                //console.log(str);
                 DATA += str;
             }
             init.setDate(init.getDate() + 7);
             setTimeout(function () {
-                getNumbers(init, fileName);
-            }, 10);
+                getNumbers(init, fileName, DATA);
+            }, 25);
         });
     } else {
         console.log(fileName);
@@ -88,7 +58,33 @@ function getLottoOnDay(url, date, callback) {
 
             setTimeout(function () {
                 callback(obj);
-            }, 50);
+            }, 25);
         }
     })
+}
+
+function getMth(i) {
+    let month = [];
+    month[0] = "Jan";
+    month[1] = "Feb";
+    month[2] = "Mar";
+    month[3] = "Apr";
+    month[4] = "May";
+    month[5] = "Jun";
+    month[6] = "Jul";
+    month[7] = "Aug";
+    month[8] = "Sep";
+    month[9] = "Oct";
+    month[10] = "Nov";
+    month[11] = "Dec";
+    return month[i];
+}
+
+function shortYear(fullYear) {
+    fullYear = fullYear.toString();
+    return fullYear.slice(-2, -1) + fullYear.slice(-1)
+}
+
+function padNumber(number) {
+    return (number < 10 ? '0' : '') + number
 }
